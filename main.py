@@ -1,15 +1,23 @@
 from repositories import (init_database,
                           create_project,
-                          create_task)
+                          create_task,
+                          get_projects,
+                          get_project)
 
 
 def main():
     init_database()
-    create_project()
+    project = ('Demo project 1', '2024-12-06', '2025-03-10')
+    create_project(project)
 
     project_id = 1 # TODO Dohvatiti iz baze!!!
     create_task(project_id)
-    # Nastavak izvrsavanja programa
+
+    project = get_project(1)
+    print(project)
+
+    projects = get_projects()
+    print(projects)
 
 
 
