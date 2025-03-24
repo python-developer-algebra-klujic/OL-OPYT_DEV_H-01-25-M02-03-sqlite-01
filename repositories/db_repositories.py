@@ -61,6 +61,14 @@ def create_project():
         print(f'Dogodila se greska {ex}.')
 
 
+def get_project():
+    pass
+
+
+def get_projects():
+    pass
+
+
 def create_task(project_id: int):
     insert_task_statement = '''
         INSERT INTO tasks(name, priority, status_id,
