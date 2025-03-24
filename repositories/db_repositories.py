@@ -45,24 +45,7 @@ def create_project(project: Tuple):
     if len(project_from_db) > 0:
         # Update project
         return
-
-    try:
-        # 1. KORAK Kreiranje konekcije
-        with sqlite3.connect(DATABASE) as conn:
-            # 2. KORAK Kreiranje Cursor objekta za rad s bazom (predstavlja nasu bazu)
-            cursor = conn.cursor()
-
-            # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(CREATE_PROJECT, project)
-
-            # Pokreni postupak snimanja promjena u bazi!!!
-            conn.commit()
-
-    except sqlite3.OperationalError as e:
-        print(f'Failed to open database: {e}')
-
-    except Exception as ex:
-        print(f'Dogodila se greska {ex}.')
+    _commit_to_db(CREATE_PROJECT, project)
 
 
 def get_project(project_id: int):
@@ -113,10 +96,14 @@ def get_projects():
         print(f'Dogodila se greska {ex}.')
 
 
-def create_task(project_id: int):
+def create_task(task):
     # TODO Provjeriti postoji li ovaj projekt u bazi?
     # Ako postoji azuriraj ga, a ako ne postoji kreiraj ga
 
+    _commit_to_db(CREATE_PROJECT, task)
+
+
+def _commit_to_db(statement, data):
     try:
         # 1. KORAK Kreiranje konekcije
         with sqlite3.connect(DATABASE) as conn:
@@ -124,9 +111,7 @@ def create_task(project_id: int):
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(CREATE_TASK,
-                           ('Task 1', 1, 1,
-                            '2025-01-31', '2025-02-10', project_id))
+            cursor.execute(statement, data)
 
             # Pokreni postupak snimanja promjena u bazi!!!
             conn.commit()
@@ -136,3 +121,7 @@ def create_task(project_id: int):
 
     except Exception as ex:
         print(f'Dogodila se greska {ex}.')
+
+
+def _get_from_db(statement):
+    pass
