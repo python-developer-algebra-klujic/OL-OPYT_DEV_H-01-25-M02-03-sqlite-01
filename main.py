@@ -7,11 +7,11 @@ from repositories import (init_database,
 
 def main():
     init_database()
-    project = ('Demo project 1', '2024-12-06', '2025-03-10')
+    project = ('Demo project 12', '2024-12-06', '2025-03-10')
     create_project(project)
 
     project_id = 6 # TODO Dohvatiti iz baze!!!
-    task = ('Task 11', 1, 1,
+    task = ('Task 12', 1, 1,
             '2024-12-06', '2025-03-10', project_id)
     create_task(task)
 

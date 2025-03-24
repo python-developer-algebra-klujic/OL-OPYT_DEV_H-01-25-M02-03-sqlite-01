@@ -39,6 +39,7 @@ def init_database():
         print(f'Dogodila se greska {ex}.')
 
 
+
 def create_project(project: Tuple):
     projects_from_db = get_projects()
     project_from_db = list(filter(lambda p: p[1] == project[0], projects_from_db))
@@ -47,53 +48,12 @@ def create_project(project: Tuple):
         return
     _commit_to_db(CREATE_PROJECT, project)
 
-
 def get_project(project_id: int):
-    try:
-        # 1. KORAK Kreiranje konekcije
-        with sqlite3.connect(DATABASE) as conn:
-            # 2. KORAK Kreiranje Cursor objekta za rad s bazom (predstavlja nasu bazu)
-            cursor = conn.cursor()
-
-            # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(GET_PROJECT, (project_id,))
-            projects = cursor.fetchall()
-
-            # Vrati podatke koji su dohvaceni iz baze
-            if len(projects) > 0:
-                return projects[0]
-            else:
-                return None
-
-    except sqlite3.OperationalError as e:
-        print(f'Failed to open database: {e}')
-
-    except Exception as ex:
-        print(f'Dogodila se greska {ex}.')
-
+    return _get_from_db(GET_PROJECT, (project_id,))
 
 def get_projects():
-    try:
-        # 1. KORAK Kreiranje konekcije
-        with sqlite3.connect(DATABASE) as conn:
-            # 2. KORAK Kreiranje Cursor objekta za rad s bazom (predstavlja nasu bazu)
-            cursor = conn.cursor()
+    return _get_from_db(GET_PROJECTS)
 
-            # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(GET_PROJECTS)
-            projects = cursor.fetchall()
-
-            # Vrati podatke koji su dohvaceni iz baze
-            if len(projects) > 0:
-                return projects
-            else:
-                return None
-
-    except sqlite3.OperationalError as e:
-        print(f'Failed to open database: {e}')
-
-    except Exception as ex:
-        print(f'Dogodila se greska {ex}.')
 
 
 def create_task(task):
@@ -101,6 +61,8 @@ def create_task(task):
     # Ako postoji azuriraj ga, a ako ne postoji kreiraj ga
 
     _commit_to_db(CREATE_TASK, task)
+
+
 
 
 def _commit_to_db(statement, data):
@@ -122,6 +84,29 @@ def _commit_to_db(statement, data):
     except Exception as ex:
         print(f'Dogodila se greska {ex}.')
 
+def _get_from_db(statement, condition: Tuple = ()):
+    try:
+        # 1. KORAK Kreiranje konekcije
+        with sqlite3.connect(DATABASE) as conn:
+            # 2. KORAK Kreiranje Cursor objekta za rad s bazom (predstavlja nasu bazu)
+            cursor = conn.cursor()
 
-def _get_from_db(statement):
-    pass
+            # 3. KORAK Izvrsavanje SQL Query naredbi
+            if len(condition) > 0:
+                cursor.execute(statement, condition)
+            else:
+                cursor.execute(statement)
+
+            projects = cursor.fetchall()
+
+            # Vrati podatke koji su dohvaceni iz baze
+            if len(projects) > 0:
+                return projects
+            else:
+                return None
+
+    except sqlite3.OperationalError as e:
+        print(f'Failed to open database: {e}')
+
+    except Exception as ex:
+        print(f'Dogodila se greska {ex}.')
