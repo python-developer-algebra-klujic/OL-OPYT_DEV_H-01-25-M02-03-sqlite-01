@@ -100,7 +100,7 @@ def create_task(task):
     # TODO Provjeriti postoji li ovaj projekt u bazi?
     # Ako postoji azuriraj ga, a ako ne postoji kreiraj ga
 
-    _commit_to_db(CREATE_PROJECT, task)
+    _commit_to_db(CREATE_TASK, task)
 
 
 def _commit_to_db(statement, data):
