@@ -54,6 +54,13 @@ def get_project(project_id: int):
 def get_projects():
     return _get_from_db(GET_PROJECTS)
 
+def update_project(project_id: int, project: Tuple):
+    # TODO - dovrsiti funkciju tako da koristi neku od dolje kreiranih private funkcija
+    pass
+
+def delete_project(project_id: int):
+    # TODO - dovrsiti funkciju tako da koristi neku od dolje kreiranih private funkcija
+    pass
 
 
 def create_task(task):
@@ -62,6 +69,8 @@ def create_task(task):
 
     _commit_to_db(CREATE_TASK, task)
 
+# TODO - ostale CRUD funkcija za Taskove
+# OPREZ - svaki task mora biti povezan uz project!!!
 
 
 
