@@ -10,10 +10,10 @@ def main():
     project = ('Demo project 1', '2024-12-06', '2025-03-10')
     create_project(project)
 
-    project_id = 1 # TODO Dohvatiti iz baze!!!
+    project_id = 6 # TODO Dohvatiti iz baze!!!
     create_task(project_id)
 
-    project = get_project(1)
+    project = get_project(5)
     print(project)
 
     projects = get_projects()

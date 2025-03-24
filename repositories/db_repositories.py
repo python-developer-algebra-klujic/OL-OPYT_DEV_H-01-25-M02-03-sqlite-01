@@ -3,7 +3,11 @@ from typing import Tuple
 
 from constants import (DATABASE,
                        CREATE_TABLE_PROJECTS,
-                       CREATE_TABLE_TASKS)
+                       CREATE_PROJECT,
+                       GET_PROJECTS,
+                       GET_PROJECT,
+                       CREATE_TABLE_TASKS,
+                       CREATE_TASK)
 
 
 def init_database():
@@ -36,14 +40,10 @@ def init_database():
 
 
 def create_project(project: Tuple):
-    insert_project_statement = '''
-        INSERT INTO projects(name, begin_date, end_date)
-        VALUES(?, ?, ?)
-    '''
-
     projects_from_db = get_projects()
     project_from_db = list(filter(lambda p: p[1] == project[0], projects_from_db))
     if len(project_from_db) > 0:
+        # Update project
         return
 
     try:
@@ -53,7 +53,7 @@ def create_project(project: Tuple):
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(insert_project_statement, project)
+            cursor.execute(CREATE_PROJECT, project)
 
             # Pokreni postupak snimanja promjena u bazi!!!
             conn.commit()
@@ -66,11 +66,6 @@ def create_project(project: Tuple):
 
 
 def get_project(project_id: int):
-    get_project_statement = '''
-        SELECT * FROM projects
-        WHERE id = (?)
-    '''
-
     try:
         # 1. KORAK Kreiranje konekcije
         with sqlite3.connect(DATABASE) as conn:
@@ -78,7 +73,7 @@ def get_project(project_id: int):
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(get_project_statement, (project_id,))
+            cursor.execute(GET_PROJECT, (project_id,))
             projects = cursor.fetchall()
 
             # Vrati podatke koji su dohvaceni iz baze
@@ -95,10 +90,6 @@ def get_project(project_id: int):
 
 
 def get_projects():
-    get_projects_statement = '''
-        SELECT * FROM projects
-    '''
-
     try:
         # 1. KORAK Kreiranje konekcije
         with sqlite3.connect(DATABASE) as conn:
@@ -106,7 +97,7 @@ def get_projects():
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(get_projects_statement)
+            cursor.execute(GET_PROJECTS)
             projects = cursor.fetchall()
 
             # Vrati podatke koji su dohvaceni iz baze
@@ -123,12 +114,6 @@ def get_projects():
 
 
 def create_task(project_id: int):
-    insert_task_statement = '''
-        INSERT INTO tasks(name, priority, status_id,
-                            begin_date, end_date, project_id)
-        VALUES(?, ?, ?, ?, ?, ?)
-    '''
-
     # TODO Provjeriti postoji li ovaj projekt u bazi?
     # Ako postoji azuriraj ga, a ako ne postoji kreiraj ga
 
@@ -139,7 +124,7 @@ def create_task(project_id: int):
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            cursor.execute(insert_task_statement,
+            cursor.execute(CREATE_TASK,
                            ('Task 1', 1, 1,
                             '2025-01-31', '2025-02-10', project_id))
 
