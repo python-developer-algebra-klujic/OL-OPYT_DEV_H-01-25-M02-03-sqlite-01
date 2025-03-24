@@ -1,30 +1,13 @@
 import sqlite3
+from constants import (DATABASE,
+                       CREATE_TABLE_PROJECTS,
+                       CREATE_TABLE_TASKS)
 
 
 def init_database():
-    DATABASE = 'databases/projects.db'
-
-    create_tables = [
-        '''
-        CREATE TABLE IF NOT EXISTS projects (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            begin_date DATE,
-            end_date DATE
-        );''',
-
-        '''
-        CREATE TABLE IF NOT EXISTS tasks (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            name TEXT NOT NULL,
-            priority INTEGER,
-            project_id INTEGER NOT NULL,
-            status_id INTEGER NOT NULL,
-            begin_date DATE NOT NULL,
-            end_date DATE NOT NULL,
-
-            FOREIGN KEY (project_id) REFERENCES projects (id) ON DELETE CASCADE ON UPDATE CASCADE
-        );'''
+    create_tables_statements = [
+        CREATE_TABLE_PROJECTS,
+        CREATE_TABLE_TASKS
     ]
 
     try:
@@ -34,7 +17,7 @@ def init_database():
             cursor = conn.cursor()
 
             # 3. KORAK Izvrsavanje SQL Query naredbi
-            for statement in create_tables:
+            for statement in create_tables_statements:
                 cursor.execute(statement)
 
             # Pokreni postupak snimanja promjena u bazi!!!
