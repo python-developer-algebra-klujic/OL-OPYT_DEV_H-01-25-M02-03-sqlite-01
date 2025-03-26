@@ -14,13 +14,13 @@ Base = declarative_base()
 class Project(Base):
     __tablename__ = 'projects'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(length=NAME_LENGTH), nullable=False, default='No name')
     begin_date = Column(DateTime, nullable=True)
     end_date = Column(DateTime, nullable=True)
 
     # Relacije prema drugim tablicama
-    tasks = relationship('Task')
+    # tasks = relationship('Task')
 
     def __repr__(self):
         return f'Project: {self.name}'
@@ -29,7 +29,7 @@ class Project(Base):
 class Task(Base):
     __tablename__ = 'tasks'
 
-    id = Column(Integer, primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(length=NAME_LENGTH), nullable=False)
     priority = Column(String(length=30), nullable=False, default='Normal')
     status = Column(String(length=30), nullable=False, default='New')
