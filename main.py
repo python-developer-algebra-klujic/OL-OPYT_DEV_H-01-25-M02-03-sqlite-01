@@ -8,6 +8,31 @@ from repositories import (init_database,
 from repositories.sa_db_repo import (Base, engine, Project, Task, session)
 
 
+def create_project(project: Project):
+    # Provjera imam li ovaj projekt u bazi
+    project_from_db = session.query(Project).filter(Project.name == project.name).one_or_none()
+
+    if project_from_db == None:
+        session.add(project)
+        session.commit()
+        return project
+
+    return project_from_db
+
+
+def create_task(task: Task):
+    task_from_db = session.query(Task).filter(Task.name == task.name).one_or_none()
+
+    if task_from_db == None:
+        session.add(task)
+        session.commit()
+        return task
+
+    return task_from_db
+
+
+
+
 def main():
     #region SQLITE3 module
     # init_database()
@@ -31,17 +56,17 @@ def main():
     project = Project(name='Integrate SQL Alchemy',
                       begin_date=dt.strptime('2025-01-31', '%Y-%m-%d'),
                       end_date=dt.strptime('2025-02-28', '%Y-%m-%d'))
+    project = create_project(project=project)
+
+
 
     task = Task(name = 'Install SQL Alchemy',
                 priority = 'High',
                 status = 'New',
                 begin_date = dt(2025, 1, 31, 15, 35),  #.strptime('2025-01-31', '%Y-%m-%d'),
                 end_date = dt.strptime('2025-01-31', '%Y-%m-%d'))
-
     task.project = project
-    session.add_all([project, task])
-
-    session.commit()
+    task = create_task(task)
 
 
 

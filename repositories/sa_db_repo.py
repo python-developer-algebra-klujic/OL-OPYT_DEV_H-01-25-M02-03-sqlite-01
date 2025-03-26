@@ -6,7 +6,7 @@ from constants import (NAME_LENGTH)
 
 
 # 1. Kreirati engine = veza prema bazi podataka
-engine = create_engine('sqlite:///databases/sa_projects.db', echo=True)
+engine = create_engine('sqlite:///databases/sa_projects.db')
 
 # 1.1. Kreirati Python klase koji ce predstavljati tablice u bazi podataka
 Base = declarative_base()
