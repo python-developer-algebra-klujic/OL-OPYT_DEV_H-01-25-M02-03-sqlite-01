@@ -47,4 +47,3 @@ class Task(Base):
 # 2. Kreirati Session = slicno kao cursor
 Session = sessionmaker(bind=engine)
 session = Session()
-

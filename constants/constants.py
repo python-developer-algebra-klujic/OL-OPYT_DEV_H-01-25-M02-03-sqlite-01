@@ -1,7 +1,4 @@
-
 DATABASE = 'databases/projects.db'
-
-
 
 CREATE_TABLE_PROJECTS = '''
         CREATE TABLE IF NOT EXISTS projects (
@@ -26,7 +23,6 @@ GET_PROJECT = '''
     '''
 
 
-
 CREATE_TABLE_TASKS = '''
         CREATE TABLE IF NOT EXISTS tasks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -45,4 +41,3 @@ CREATE_TASK = '''
                             begin_date, end_date, project_id)
         VALUES(?, ?, ?, ?, ?, ?)
     '''
-
